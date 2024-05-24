@@ -7,7 +7,7 @@
 </template>
 
 <script>
-import defaultImage from '../assets/default.png'
+import defaultImage from '@/assets/default.png'
 export default {
   name: 'LazyImage',
   props: {

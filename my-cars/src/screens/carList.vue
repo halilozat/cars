@@ -55,8 +55,8 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import LazyImage from '../components/lazyImage.vue';
-import defaultImage from '../assets/default.png'
+import LazyImage from '@/components/lazyImage.vue';
+import defaultImage from '@/assets/default.png'
 
 export default {
   name: 'carList',

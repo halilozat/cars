@@ -1,5 +1,4 @@
 import { createStore } from 'vuex';
-import axios from "axios";
 import { getCars, getCarDetails } from '../services/cars.js'
 
 export default createStore({
