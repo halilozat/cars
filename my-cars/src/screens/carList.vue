@@ -35,7 +35,7 @@
             </div>
           </div>
           <div class="car-info">
-            <div class="icon" >> </div> Kilometre: {{ item.properties.find(prop => prop.name == 'km').value }}
+            <div class="icon" >> </div> Kilometre: {{ item.properties.find(prop => prop.name == 'km').value }} km
           </div>
           <div class="car-info">
             <div class="icon" >> </div> Renk: {{ item.properties.find(prop => prop.name == 'color').value }}
@@ -51,20 +51,43 @@
       </div>
     </div>
   </div>
+  <div class="card">
+    <Pagination
+        :totalPages="totalPages"
+        :currentPage.sync="currentPage"
+        :resultsPerPage.sync="resultsPerPage"
+    />
+  </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex';
 import LazyImage from '@/components/lazyImage.vue';
 import defaultImage from '@/assets/default.png'
+import Pagination from '@/components/pagination.vue';
 
 export default {
   name: 'carList',
   components: {
     LazyImage,
+    Pagination
+  },
+  data() {
+    return {
+      currentPage: 1,
+      resultsPerPage: 20,
+    };
   },
   computed: {
     ...mapGetters(['cars']),
+    totalPages() {
+      return Math.ceil(this.cars.length / this.resultsPerPage);
+    },
+    paginatedData() {
+      const start = (this.currentPage - 1) * this.resultsPerPage;
+      const end = start + this.resultsPerPage;
+      return this.cars.slice(start, end);
+    },
   },
   async created() {
     await this.$store.dispatch('fetchCars');
@@ -92,17 +115,24 @@ export default {
 
   .content {
     display: flex;
+    flex-wrap: wrap;
     justify-content: space-between;
 
     .image {
-      width: 337px;
+      width: 100%;
+      max-width: 337px;
       position: relative;
+      margin-bottom: 10px;
     }
     .info {
-      width: calc(100% - 357px);
+      width: 100%;
+      max-width: calc(100% - 357px);
+
       .title {
         display: flex;
         justify-content: space-between;
+        flex-wrap: wrap;
+
         .item-title {
           margin-top: 3px;
           letter-spacing: -0.4px;
@@ -111,6 +141,7 @@ export default {
           line-height: 24px;
           align-items: start;
           display: flex;
+          flex: 1 1 100%;
         }
         .item-modalName {
           margin-top: 3px;
@@ -120,11 +151,13 @@ export default {
           line-height: 24px;
           align-items: start;
           display: flex;
+          flex: 1 1 100%;
         }
         .city {
           font-size: 13px;
           font-weight: 700;
           letter-spacing: -0.3px;
+          margin-right: 10px;
         }
         .date {
           font-size: 12px;
@@ -138,9 +171,10 @@ export default {
         color: #7f90a8;
         font-size: 13px;
         line-height: 18px;
+
         .icon {
           color: red;
-          font-weight: 700
+          font-weight: 700;
         }
       }
       .price-container {
@@ -160,4 +194,78 @@ export default {
     }
   }
 }
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+  .card {
+    padding: 15px;
+  }
+  .content {
+    flex-direction: column;
+
+    .image {
+      width: 100%;
+      max-width: none;
+    }
+    .info {
+      width: 100%;
+      max-width: none;
+
+      .title {
+        flex-direction: column;
+        .item-title,
+        .item-modalName,
+        .city,
+        .date {
+          font-size: 16px;
+        }
+        .city {
+          margin-bottom: 5px;
+        }
+      }
+      .car-info {
+        flex-direction: column;
+        .icon {
+          margin-bottom: 5px;
+        }
+      }
+      .price-container {
+        flex-direction: column;
+        align-items: flex-start;
+
+        .price {
+          font-size: 18px;
+          margin-bottom: 10px;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .card {
+    padding: 10px;
+  }
+  .content {
+    .info {
+      .title {
+        .item-title,
+        .item-modalName,
+        .city,
+        .date {
+          font-size: 14px;
+        }
+      }
+      .car-info {
+        font-size: 12px;
+      }
+      .price-container {
+        .price {
+          font-size: 16px;
+        }
+      }
+    }
+  }
+}
 </style>
+
