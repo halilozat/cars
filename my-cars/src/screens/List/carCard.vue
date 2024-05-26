@@ -1,93 +1,69 @@
 <template>
-  <div v-if="cars.length">
-    <FilterComponent />
-
-    <div v-for="item in cars" :key="item.id">
-      <div @click="goToDetail(item.id)" class="card">
-        <div class="content">
-          <div class="image">
-<!--                    <img-->
-<!--                        v-lazy="item.photo"-->
-<!--                        :alt="item.name"-->
-<!--                        @error="setDefaultImage"-->
-<!--                        v-if="item.photo"-->
-<!--                    />-->
-            <img
-                :src="item.photo"
-                :alt="item.name"
-                v-if="item.photo"
-            />
+  <div @click="goToDetail(item.id)" class="card">
+    <div class="content">
+      <div class="image">
+        <img
+            :src="item.photo"
+            :alt="item.name"
+            v-if="item.photo"
+        />
+      </div>
+      <div class="info">
+        <div class="title">
+          <div>
+            <div class="item-title">
+              {{ item.title }}
+            </div>
+            <div class="item-modalName">
+              {{ item.modelName }}
+            </div>
           </div>
-          <div class="info">
-            <div class="title">
-              <div>
-                <div class="item-title">
-                  {{ item.title }}
-                </div>
-                <div class="item-modalName">
-                  {{ item.modelName }}
-                </div>
+          <div>
+            <div class="city">
+              {{ item.location.cityName }}, {{ item.location.townName }}
+              <div class="date">
+                {{ item.dateFormatted }}
               </div>
-              <div>
-                <div class="city">
-                  {{ item.location.cityName }}, {{ item.location.townName }}
-                  <div class="date">
-                    {{ item.dateFormatted }}
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="car-info">
-              <div class="icon" >> </div> Kilometre: {{ item.properties.find(prop => prop.name === 'km').value }} km
-            </div>
-            <div class="car-info">
-              <div class="icon" >> </div> Renk: {{ item.properties.find(prop => prop.name === 'color').value }}
-            </div>
-            <div class="car-info">
-              <div class="icon" >> </div> Yil: {{ item.properties.find(prop => prop.name === 'year').value }}
-            </div>
-            <div class="price-container">
-              <div></div>
-              <div class="price">{{ item.priceFormatted }}</div>
             </div>
           </div>
         </div>
+        <div class="car-info">
+          <div class="icon" >> </div> Kilometre: {{ item.properties.find(prop => prop.name === 'km').value }} km
+        </div>
+        <div class="car-info">
+          <div class="icon" >> </div> Renk: {{ item.properties.find(prop => prop.name === 'color').value }}
+        </div>
+        <div class="car-info">
+          <div class="icon" >> </div> Yil: {{ item.properties.find(prop => prop.name === 'year').value }}
+        </div>
+        <div class="price-container">
+          <div></div>
+          <div class="price">{{ item.priceFormatted }}</div>
+        </div>
       </div>
     </div>
-    <div class="card">
-      <Pagination />
-    </div>
-  </div>
-  <div v-else>
-    <Loader />
   </div>
 </template>
 
 <script>
-import {mapGetters, mapState} from 'vuex';
-import defaultImage from '@/assets/default.png'
 import Pagination from '@/components/pagination.vue';
 import FilterComponent from '@/components/filter.vue';
 import Loader from "@/components/loader.vue";
 
 export default {
   name: 'carList',
+  props: {
+    item: {
+      type: Object,
+      required: true,
+    },
+  },
   components: {
     Pagination,
     FilterComponent,
     Loader
   },
-  computed: {
-    ...mapState(['resultsPerPage']),
-    ...mapGetters(['cars']),
-  },
-  async created() {
-    await this.$store.dispatch('fetchCars', {take: this.resultsPerPage});
-  },
   methods: {
-    setDefaultImage(event) {
-      event.target.src = defaultImage;
-    },
     goToDetail(id) {
       this.$router.push({ name: 'carDetails', params: { id } });
     }

@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import carList from '@/screens/carList.vue';
-import carDetails from '@/screens/carDetails.vue';
+import carList from '@/screens/List/carList.vue';
+import carDetails from '@/screens/Details/carDetails.vue';
 
 const routes = [
     {
