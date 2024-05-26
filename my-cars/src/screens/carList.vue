@@ -1,67 +1,68 @@
 <template>
-  <div v-for="item in cars" :key="item.id">
-    <div @click="goToDetail(item.id)" class="card">
-      <div class="content">
-        <div class="image">
-          <!--        <img-->
-          <!--            v-lazy="item.photo"-->
-          <!--            :alt="item.name"-->
-          <!--            @error="setDefaultImage"-->
-          <!--            v-if="item.photo"-->
-          <!--        />-->
-          <img
-              :src="item.photo"
-              :alt="item.name"
-              v-if="item.photo"
-          />
-        </div>
-        <div class="info">
-          <div class="title">
-            <div>
-              <div class="item-title">
-                {{ item.title }}
+  <div v-if="cars.length">
+    <div v-for="item in cars" :key="item.id">
+      <div @click="goToDetail(item.id)" class="card">
+        <div class="content">
+          <div class="image">
+            <!--        <img-->
+            <!--            v-lazy="item.photo"-->
+            <!--            :alt="item.name"-->
+            <!--            @error="setDefaultImage"-->
+            <!--            v-if="item.photo"-->
+            <!--        />-->
+            <img
+                :src="item.photo"
+                :alt="item.name"
+                v-if="item.photo"
+            />
+          </div>
+          <div class="info">
+            <div class="title">
+              <div>
+                <div class="item-title">
+                  {{ item.title }}
+                </div>
+                <div class="item-modalName">
+                  {{ item.modelName }}
+                </div>
               </div>
-              <div class="item-modalName">
-                {{ item.modelName }}
-              </div>
-            </div>
-            <div>
-              <div class="city">
-                {{ item.location.cityName }}, {{ item.location.townName }}
-                <div class="date">
-                  {{ item.dateFormatted }}
+              <div>
+                <div class="city">
+                  {{ item.location.cityName }}, {{ item.location.townName }}
+                  <div class="date">
+                    {{ item.dateFormatted }}
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-          <div class="car-info">
-            <div class="icon" >> </div> Kilometre: {{ item.properties.find(prop => prop.name == 'km').value }} km
-          </div>
-          <div class="car-info">
-            <div class="icon" >> </div> Renk: {{ item.properties.find(prop => prop.name == 'color').value }}
-          </div>
-          <div class="car-info">
-            <div class="icon" >> </div> Yil: {{ item.properties.find(prop => prop.name == 'year').value }}
-          </div>
-          <div class="price-container">
-            <div></div>
-            <div class="price">{{ item.priceFormatted }}</div>
+            <div class="car-info">
+              <div class="icon" >> </div> Kilometre: {{ item.properties.find(prop => prop.name == 'km').value }} km
+            </div>
+            <div class="car-info">
+              <div class="icon" >> </div> Renk: {{ item.properties.find(prop => prop.name == 'color').value }}
+            </div>
+            <div class="car-info">
+              <div class="icon" >> </div> Yil: {{ item.properties.find(prop => prop.name == 'year').value }}
+            </div>
+            <div class="price-container">
+              <div></div>
+              <div class="price">{{ item.priceFormatted }}</div>
+            </div>
           </div>
         </div>
       </div>
     </div>
+    <div class="card">
+      <Pagination />
+    </div>
   </div>
-  <div class="card">
-    <Pagination
-        :totalPages="totalPages"
-        :currentPage.sync="currentPage"
-        :resultsPerPage.sync="resultsPerPage"
-    />
+  <div v-else>
+    <p>Loading...</p>
   </div>
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import {mapGetters, mapState} from 'vuex';
 import LazyImage from '@/components/lazyImage.vue';
 import defaultImage from '@/assets/default.png'
 import Pagination from '@/components/pagination.vue';
@@ -72,25 +73,12 @@ export default {
     LazyImage,
     Pagination
   },
-  data() {
-    return {
-      currentPage: 1,
-      resultsPerPage: 20,
-    };
-  },
   computed: {
+    ...mapState(['resultsPerPage']),
     ...mapGetters(['cars']),
-    totalPages() {
-      return Math.ceil(this.cars.length / this.resultsPerPage);
-    },
-    paginatedData() {
-      const start = (this.currentPage - 1) * this.resultsPerPage;
-      const end = start + this.resultsPerPage;
-      return this.cars.slice(start, end);
-    },
   },
   async created() {
-    await this.$store.dispatch('fetchCars');
+    await this.$store.dispatch('fetchCars', this.resultsPerPage);
   },
   methods: {
     setDefaultImage(event) {
