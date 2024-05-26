@@ -15,9 +15,9 @@
           <option value="">Gelişmiş Arama</option>
           <option value="price-asc">Fiyat: Ucuzdan Pahalıya</option>
           <option value="price-desc">Fiyat: Pahalıdan Ucuza</option>
-          <option value="year-desc">Yıl: Eskiden Yeniye</option>
+          <option value="year-asc">Yıl: Eskiden Yeniye</option>
           <option value="year-desc">Yıl: Yeniden Eskiye</option>
-          <option value="date-desc">Tarih: Eskiden Yeniye</option>
+          <option value="date-asc">Tarih: Eskiden Yeniye</option>
           <option value="date-desc">Tarih: Yeniden Eskiye</option>
         </select>
       </label>
@@ -65,6 +65,7 @@ export default {
 <style scoped>
 .filter-container {
   display: flex;
+  flex-direction: column;
   justify-content: space-between;
   border-bottom: 1px solid #ccc;
   cursor: pointer;
@@ -78,6 +79,7 @@ export default {
 
 .filter-inputs {
   display: flex;
+  flex-direction: column;
   gap: 20px;
 }
 
@@ -87,8 +89,9 @@ export default {
   align-items: start;
 }
 
-.filter-inputs input {
-  display: block;
+.filter-inputs label input,
+.filter-inputs label select,
+.filter-inputs label button {
   width: 100%;
   font-size: 14px;
   line-height: 1.42857143;
@@ -103,7 +106,7 @@ export default {
   border: 1px solid #ebebeb;
 }
 
-.filter-inputs select {
+.filter-inputs label select {
   display: block;
   width: 100%;
   font-size: 14px;
@@ -129,5 +132,27 @@ export default {
   color: #fff;
   font-weight: 700;
   border-radius: 4px;
+}
+
+/* Media Queries for Responsive Design */
+@media (min-width: 600px) {
+  .filter-container {
+    flex-direction: row;
+  }
+
+  .filter-inputs {
+    flex-direction: row;
+  }
+
+  .filter-inputs label {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .filter-inputs input,
+  .filter-inputs select {
+    width: auto;
+    flex: 1;
+  }
 }
 </style>
