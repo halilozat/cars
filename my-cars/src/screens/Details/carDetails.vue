@@ -1,5 +1,8 @@
 <template>
   <div id="detail">
+    <div class="card">
+      <div @click="goBack">Ana Sayfaya Dön</div>
+    </div>
     <div class="card" v-if="carDetails">
       <div class="header">
         <div class="product-title">
@@ -159,13 +162,9 @@ export default {
   async created() {
     await this.$store.dispatch('fetchCarDetails', this.id);
   },
-  watch: {
-    id: {
-      immediate: true,
-      handler(newId) {
-        this.$store.dispatch('fetchCarDetail', newId);
-      }
-
+  methods: {
+    goBack() {
+      this.$router.push({ name: 'carList' });
     }
   }
 };
