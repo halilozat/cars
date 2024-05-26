@@ -37,11 +37,6 @@ export default {
   async created() {
     await this.$store.dispatch('fetchCars', {take: this.resultsPerPage});
   },
-  methods: {
-    goToDetail(id) {
-      this.$router.push({ name: 'carDetails', params: { id } });
-    }
-  }
 };
 </script>
 

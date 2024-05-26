@@ -148,7 +148,7 @@
 import { mapGetters } from 'vuex';
 import ImageCarousel from '@/components/caroussel.vue';
 import Loader from "@/components/loader.vue";
-import {formatPrice} from "../../helpers/priceFormatter.js";
+import { formatPrice } from "@/helpers/priceFormatter.js";
 
 export default {
   name: 'Detail',

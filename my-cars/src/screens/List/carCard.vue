@@ -49,7 +49,7 @@
 import Pagination from '@/components/pagination.vue';
 import FilterComponent from '@/components/filter.vue';
 import Loader from "@/components/loader.vue";
-import {formatPrice} from "../../helpers/priceFormatter.js";
+import { formatPrice } from "@/helpers/priceFormatter.js";
 
 export default {
   name: 'carList',

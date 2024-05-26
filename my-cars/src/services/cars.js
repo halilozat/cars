@@ -1,7 +1,6 @@
 import api from "./api.js";
 
 export const getCars = async (params = {}) => {
-    console.log(params)
     const defaultParams = {
         take: 20,
         sort: null,
