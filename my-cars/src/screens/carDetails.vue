@@ -1,6 +1,5 @@
 <template>
   <div id="detail">
-    <h1>Detail Page</h1>
     <div class="card" v-if="carDetails">
       <div class="header">
         <div class="product-title">
@@ -137,7 +136,7 @@
       </div>
     </div>
     <div v-else>
-      <p>Yukleniyor...</p>
+      <Loader />
     </div>
   </div>
 </template>
@@ -145,6 +144,7 @@
 <script>
 import { mapGetters } from 'vuex';
 import ImageCarousel from '@/components/caroussel.vue';
+import Loader from "@/components/loader.vue";
 
 export default {
   name: 'Detail',
@@ -154,6 +154,7 @@ export default {
   },
   components: {
     ImageCarousel,
+    Loader
   },
   async created() {
     await this.$store.dispatch('fetchCarDetails', this.id);

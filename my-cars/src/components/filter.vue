@@ -74,7 +74,8 @@ export default {
           this.sortDirection = 1;
           break;
         default:
-          // Default case
+          this.sort = null;
+          this.sortDirection = null;
           break;
       }
     },

@@ -1,6 +1,6 @@
 <template>
   <div v-if="cars.length">
-    <FilterComponent @update-filters="updateFilters" />
+    <FilterComponent />
 
     <div v-for="item in cars" :key="item.id">
       <div @click="goToDetail(item.id)" class="card">
@@ -59,7 +59,7 @@
     </div>
   </div>
   <div v-else>
-    <p>Yukleniyor...</p>
+    <Loader />
   </div>
 </template>
 
@@ -68,12 +68,14 @@ import {mapGetters, mapState} from 'vuex';
 import defaultImage from '@/assets/default.png'
 import Pagination from '@/components/pagination.vue';
 import FilterComponent from '@/components/filter.vue';
+import Loader from "@/components/loader.vue";
 
 export default {
   name: 'carList',
   components: {
     Pagination,
-    FilterComponent
+    FilterComponent,
+    Loader
   },
   computed: {
     ...mapState(['resultsPerPage']),
