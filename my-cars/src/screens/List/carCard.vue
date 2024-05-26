@@ -38,7 +38,7 @@
         </div>
         <div class="price-container">
           <div></div>
-          <div class="price">{{ item.priceFormatted }}</div>
+          <div class="price">{{ formatPrice(item.price) }}</div>
         </div>
       </div>
     </div>
@@ -49,6 +49,7 @@
 import Pagination from '@/components/pagination.vue';
 import FilterComponent from '@/components/filter.vue';
 import Loader from "@/components/loader.vue";
+import {formatPrice} from "../../helpers/priceFormatter.js";
 
 export default {
   name: 'carList',
@@ -64,6 +65,7 @@ export default {
     Loader
   },
   methods: {
+    formatPrice,
     goToDetail(id) {
       this.$router.push({ name: 'carDetails', params: { id } });
     }

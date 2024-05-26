@@ -35,7 +35,7 @@
             </div>
             <div>
               <div class="product-price">
-                {{ carDetails.priceFormatted }}
+                {{ formatPrice(carDetails.price) }}
               </div>
             </div>
           </div>
@@ -148,6 +148,7 @@
 import { mapGetters } from 'vuex';
 import ImageCarousel from '@/components/caroussel.vue';
 import Loader from "@/components/loader.vue";
+import {formatPrice} from "../../helpers/priceFormatter.js";
 
 export default {
   name: 'Detail',
@@ -163,6 +164,7 @@ export default {
     await this.$store.dispatch('fetchCarDetails', this.id);
   },
   methods: {
+    formatPrice,
     goBack() {
       this.$router.push({ name: 'carList' });
     }
