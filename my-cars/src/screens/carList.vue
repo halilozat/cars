@@ -1,15 +1,27 @@
 <template>
   <div v-if="cars.length">
+<!--    <div class="filter">-->
+<!--      <div>-->
+<!--        <input type="text">-->
+<!--        <input type="text">-->
+<!--        <select name="" id=""></select>-->
+<!--      </div>-->
+<!--      <div>-->
+<!--        <button>Filtrele</button>-->
+<!--      </div>-->
+<!--    </div>-->
+    <FilterComponent @update-filters="updateFilters" />
+
     <div v-for="item in cars" :key="item.id">
       <div @click="goToDetail(item.id)" class="card">
         <div class="content">
           <div class="image">
-            <!--        <img-->
-            <!--            v-lazy="item.photo"-->
-            <!--            :alt="item.name"-->
-            <!--            @error="setDefaultImage"-->
-            <!--            v-if="item.photo"-->
-            <!--        />-->
+<!--                    <img-->
+<!--                        v-lazy="item.photo"-->
+<!--                        :alt="item.name"-->
+<!--                        @error="setDefaultImage"-->
+<!--                        v-if="item.photo"-->
+<!--                    />-->
             <img
                 :src="item.photo"
                 :alt="item.name"
@@ -36,13 +48,13 @@
               </div>
             </div>
             <div class="car-info">
-              <div class="icon" >> </div> Kilometre: {{ item.properties.find(prop => prop.name == 'km').value }} km
+              <div class="icon" >> </div> Kilometre: {{ item.properties.find(prop => prop.name === 'km').value }} km
             </div>
             <div class="car-info">
-              <div class="icon" >> </div> Renk: {{ item.properties.find(prop => prop.name == 'color').value }}
+              <div class="icon" >> </div> Renk: {{ item.properties.find(prop => prop.name === 'color').value }}
             </div>
             <div class="car-info">
-              <div class="icon" >> </div> Yil: {{ item.properties.find(prop => prop.name == 'year').value }}
+              <div class="icon" >> </div> Yil: {{ item.properties.find(prop => prop.name === 'year').value }}
             </div>
             <div class="price-container">
               <div></div>
@@ -57,21 +69,21 @@
     </div>
   </div>
   <div v-else>
-    <p>Loading...</p>
+    <p>Yukleniyor...</p>
   </div>
 </template>
 
 <script>
 import {mapGetters, mapState} from 'vuex';
-import LazyImage from '@/components/lazyImage.vue';
 import defaultImage from '@/assets/default.png'
 import Pagination from '@/components/pagination.vue';
+import FilterComponent from '@/components/filter.vue';
 
 export default {
   name: 'carList',
   components: {
-    LazyImage,
-    Pagination
+    Pagination,
+    FilterComponent
   },
   computed: {
     ...mapState(['resultsPerPage']),
@@ -80,6 +92,9 @@ export default {
   async created() {
     await this.$store.dispatch('fetchCars', this.resultsPerPage);
   },
+  mounted() {
+  console.log(this.cars)
+    },
   methods: {
     setDefaultImage(event) {
       event.target.src = defaultImage;
@@ -92,6 +107,17 @@ export default {
 </script>
 
 <style>
+.filter {
+  cursor: pointer;
+  border-top: 2px solid #ffdb4d;
+  padding: 20px;
+  margin: 10px;
+  position: relative;
+  background-color: #fff;
+  box-shadow: 0 2px 10px 0 #ededed;
+  display: flex;
+  justify-content: space-between;
+}
 .card {
   cursor: pointer;
   border-top: 2px solid #ffdb4d;

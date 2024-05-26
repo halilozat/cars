@@ -137,7 +137,7 @@
       </div>
     </div>
     <div v-else>
-      <p>Loading...</p>
+      <p>Yukleniyor...</p>
     </div>
   </div>
 </template>

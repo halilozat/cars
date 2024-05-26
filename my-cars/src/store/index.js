@@ -7,6 +7,12 @@ export default createStore({
         carDetails: null,
         currentPage: 1,
         resultsPerPage: localStorage.getItem('resultPerPage')|| 20,
+        filters: {
+            minYear: null,
+            maxYear: null,
+            sort: null,
+            sortDirection: null,
+        },
     },
     mutations: {
         setCarsData(state, payload) {
@@ -22,10 +28,14 @@ export default createStore({
             localStorage.setItem('resultPerPage', results);
             state.resultsPerPage = results;
         },
+        setSort(state, sort, sortDirection) {
+            state.sort = sort;
+            state.sortDirection = sortDirection;
+        },
     },
     actions: {
         async fetchCars({ commit }, take) {
-            const response = await getCars(take)
+            const response = await getCars({take})
             commit('setCarsData', response.data);
         },
         async fetchCarDetails({ commit }, id) {
@@ -39,6 +49,10 @@ export default createStore({
         changeResultsPerPage({ commit }, results) {
             commit('setResultsPerPage', results);
             window.scrollTo({ top: 0, behavior: 'smooth' });
+        },
+        updateFilters({ commit, dispatch }, filters) {
+            commit('updateFilters', filters);
+            // dispatch('fetchCars');
         },
     },
     getters: {
