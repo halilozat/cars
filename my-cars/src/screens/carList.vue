@@ -1,15 +1,5 @@
 <template>
   <div v-if="cars.length">
-<!--    <div class="filter">-->
-<!--      <div>-->
-<!--        <input type="text">-->
-<!--        <input type="text">-->
-<!--        <select name="" id=""></select>-->
-<!--      </div>-->
-<!--      <div>-->
-<!--        <button>Filtrele</button>-->
-<!--      </div>-->
-<!--    </div>-->
     <FilterComponent @update-filters="updateFilters" />
 
     <div v-for="item in cars" :key="item.id">
@@ -90,11 +80,8 @@ export default {
     ...mapGetters(['cars']),
   },
   async created() {
-    await this.$store.dispatch('fetchCars', this.resultsPerPage);
+    await this.$store.dispatch('fetchCars', {take: this.resultsPerPage});
   },
-  mounted() {
-  console.log(this.cars)
-    },
   methods: {
     setDefaultImage(event) {
       event.target.src = defaultImage;
@@ -107,17 +94,6 @@ export default {
 </script>
 
 <style>
-.filter {
-  cursor: pointer;
-  border-top: 2px solid #ffdb4d;
-  padding: 20px;
-  margin: 10px;
-  position: relative;
-  background-color: #fff;
-  box-shadow: 0 2px 10px 0 #ededed;
-  display: flex;
-  justify-content: space-between;
-}
 .card {
   cursor: pointer;
   border-top: 2px solid #ffdb4d;

@@ -32,10 +32,16 @@ export default createStore({
             state.sort = sort;
             state.sortDirection = sortDirection;
         },
+        updateFilter(state, filters) {
+            state.filters = filters
+        },
     },
     actions: {
-        async fetchCars({ commit }, take) {
-            const response = await getCars({take})
+        async fetchCars({ commit }, filters) {
+            const response = await getCars({
+                ...this.state.filters,
+                ...filters
+            })
             commit('setCarsData', response.data);
         },
         async fetchCarDetails({ commit }, id) {
@@ -51,8 +57,7 @@ export default createStore({
             window.scrollTo({ top: 0, behavior: 'smooth' });
         },
         updateFilters({ commit, dispatch }, filters) {
-            commit('updateFilters', filters);
-            // dispatch('fetchCars');
+            commit('updateFilter', filters);
         },
     },
     getters: {

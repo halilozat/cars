@@ -42,7 +42,7 @@ export default {
 
     async changePerPage(results) {
       this.$store.dispatch('changeResultsPerPage', results);
-      await this.$store.dispatch('fetchCars', results);
+      await this.$store.dispatch('fetchCars', {take: results});
     },
   },
 };

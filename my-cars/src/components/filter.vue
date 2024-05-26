@@ -11,7 +11,7 @@
       </label>
       <label>
         Sırala:
-        <select v-model="sort" @change="updateFilters">
+        <select v-model="sortValue" @change="updateFilters">
           <option value="">Gelişmiş Arama</option>
           <option value="price-asc">Fiyat: Ucuzdan Pahalıya</option>
           <option value="price-desc">Fiyat: Pahalıdan Ucuza</option>
@@ -23,7 +23,7 @@
       </label>
     </div>
     <div class="filter-inputs">
-      <button>
+      <button @click="applyFilters">
         Filtrele
       </button>
     </div>
@@ -31,32 +31,61 @@
 </template>
 
 <script>
+import {mapGetters, mapState} from "vuex";
+
 export default {
   data() {
     return {
       minYear: null,
       maxYear: null,
-      sort: '',
+      sortValue: null,
+      sort: null,
+      sortDirection: null,
     };
+  },
+  computed: {
+    ...mapState(['filters']),
   },
   methods: {
     updateFilters() {
-      let sort = null;
-      let sortDirection = null;
-      if (this.sort === 'price-asc') {
-        sort = 'price';
-        sortDirection = 'asc';
-      } else if (this.sort === 'price-desc') {
-        sort = 'price';
-        sortDirection = 'desc';
+      switch (this.sortValue) {
+        case 'price-asc':
+          this.sort = 0;
+          this.sortDirection = 0;
+          break;
+        case 'price-desc':
+          this.sort = 0;
+          this.sortDirection = 1;
+          break;
+        case 'year-asc':
+          this.sort = 1;
+          this.sortDirection = 0;
+          break;
+        case 'year-desc':
+          this.sort = 1;
+          this.sortDirection = 1;
+          break;
+        case 'date-asc':
+          this.sort = 2;
+          this.sortDirection = 0;
+          break;
+        case 'date-desc':
+          this.sort = 2;
+          this.sortDirection = 1;
+          break;
+        default:
+          // Default case
+          break;
       }
-
-      this.$emit('update-filters', {
+    },
+    async applyFilters() {
+      this.$store.dispatch('updateFilters', {
         minYear: this.minYear,
         maxYear: this.maxYear,
-        sort,
-        sortDirection,
+        sort: this.sort,
+        sortDirection: this.sortDirection
       });
+      await this.$store.dispatch('fetchCars', this.filters);
     },
   },
 };

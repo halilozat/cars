@@ -1,7 +1,7 @@
 import api from "./api.js";
 
 export const getCars = async (params = {}) => {
-    // Varsayılan değerler
+    console.log(params)
     const defaultParams = {
         take: 20,
         sort: null,
@@ -15,7 +15,7 @@ export const getCars = async (params = {}) => {
 
     // Tanımlı olan parametreleri filtrele
     const filteredParams = Object.fromEntries(
-        Object.entries(combinedParams).filter(([key, value]) => value !== null)
+        Object.entries(combinedParams).filter(([key, value]) => value !== null && value !== '')
     );
 
     return await api.get(`/listing`, {
